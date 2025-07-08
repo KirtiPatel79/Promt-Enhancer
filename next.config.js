@@ -37,7 +37,7 @@ const nextConfig = {
 
   // Environment variables
   env: {
-    CUSTOM_KEY: 'my-value',
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 
   // Webpack configuration
@@ -77,6 +77,9 @@ const nextConfig = {
   // TypeScript configuration
   typescript: {
     ignoreBuildErrors: false,
+  },
+  experimental: {
+    serverComponentsExternalPackages: [],
   },
 };
 
