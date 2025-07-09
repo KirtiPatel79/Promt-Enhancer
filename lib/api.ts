@@ -30,7 +30,6 @@ export class ApiClient {
         data,
       };
     } catch (error) {
-      console.error('API Error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error occurred',
@@ -39,16 +38,11 @@ export class ApiClient {
   }
 
   async healthCheck(): Promise<{ status: string; service: string }> {
-    try {
-      const response = await fetch(`${this.baseURL}/health`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Health check failed:', error);
-      throw error;
+    const response = await fetch(`${this.baseURL}/health`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    return await response.json();
   }
 }
 

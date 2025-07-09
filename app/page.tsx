@@ -1,13 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme/theme-toggle'
-// import { useToast } from '@/components/ui/use-toast'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -16,14 +15,12 @@ import {
   Zap,
   Clock,
   DollarSign,
-  User,
   Copy,
   Download,
   TrendingUp,
   Target,
   Loader2,
   CheckCircle,
-  AlertCircle,
   Code,
   Palette,
   Megaphone,
@@ -36,17 +33,6 @@ import {
 } from 'lucide-react'
 import { apiClient } from '@/lib/api'
 import { UserRole } from '@/types'
-
-interface PromptResponse {
-  enhanced_prompt: string
-  thinking_process: string
-  original_tokens: number
-  enhanced_tokens: number
-  token_savings: number
-  cost_savings_usd: number
-  processing_time: number
-  formatted_response: string
-}
 
 interface EnhancementStats {
   originalTokens: number
@@ -104,15 +90,9 @@ export default function HomePage() {
   const [showResults, setShowResults] = useState(false)
   const [errorMessage, setErrorMessage] = useState('') // Error message state
   const [copied, setCopied] = useState(false) // Copied feedback state
-  // const { toast } = useToast()
 
   const handleEnhance = async () => {
     if (!prompt.trim()) {
-      // toast({
-      //   title: "Error",
-      //   description: "Please enter a prompt to enhance.",
-      //   variant: "destructive",
-      // })
       return
     }
 
@@ -143,18 +123,9 @@ export default function HomePage() {
       })
       setShowResults(true)
       setErrorMessage('')
-      // toast({
-      //   title: "Success!",
-      //   description: "Your prompt has been enhanced successfully.",
-      // })
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Failed to enhance prompt. Please try again.')
       setShowResults(false)
-      // toast({
-      //   title: "Error",
-      //   description: "Failed to enhance prompt. Please try again.",
-      //   variant: "destructive",
-      // })
     } finally {
       setIsLoading(false)
     }
@@ -165,10 +136,6 @@ export default function HomePage() {
       await navigator.clipboard.writeText(text)
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
-      // toast({
-      //   title: "Copied!",
-      //   description: "Enhanced prompt copied to clipboard.",
-      // })
     } catch (err) {
       setErrorMessage('Failed to copy to clipboard. Try HTTPS or localhost.')
     }
@@ -443,7 +410,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Ready to Enhance</h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Enter your prompt and click "Enhance Prompt" to get started
+                    Enter your prompt and click &quot;Enhance Prompt&quot; to get started
                   </p>
                 </CardContent>
               </Card>

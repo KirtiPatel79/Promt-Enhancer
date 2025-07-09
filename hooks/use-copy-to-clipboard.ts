@@ -10,20 +10,18 @@ export function useCopyToClipboard(): UseCopyToClipboardReturn {
 
   const copyToClipboard = useCallback(async (text: string): Promise<boolean> => {
     if (!navigator?.clipboard) {
-      console.warn('Clipboard not supported');
       return false;
     }
 
     try {
       await navigator.clipboard.writeText(text);
       setIsCopied(true);
-      
+
       // Reset after 2 seconds
       setTimeout(() => setIsCopied(false), 2000);
-      
+
       return true;
     } catch (error) {
-      console.error('Failed to copy text: ', error);
       setIsCopied(false);
       return false;
     }

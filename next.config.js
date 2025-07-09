@@ -41,7 +41,7 @@ const nextConfig = {
   },
 
   // Webpack configuration
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+  webpack: (config) => {
     // Important: return the modified config
     return config;
   },

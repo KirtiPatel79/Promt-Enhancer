@@ -23,9 +23,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo);
-  }
+  // componentDidCatch(_error: Error, errorInfo: React.ErrorInfo) {
+  //   // console.error('Error caught by boundary:', error, errorInfo);
+  // }
 
   resetError = () => {
     this.setState({ hasError: false, error: undefined });
@@ -49,15 +49,15 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
             <div className="mx-auto w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
               <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
             </div>
-            
+
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
               Something went wrong
             </h2>
-            
+
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">
               An unexpected error occurred. Please try refreshing the page.
             </p>
-            
+
             <div className="space-y-3">
               <button
                 onClick={this.resetError}
@@ -66,7 +66,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                 <RefreshCw className="w-4 h-4" />
                 Try again
               </button>
-              
+
               <button
                 onClick={() => window.location.reload()}
                 className="w-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium py-2 px-4 rounded-md transition-colors duration-200"
@@ -74,7 +74,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                 Refresh page
               </button>
             </div>
-            
+
             {this.state.error && (
               <details className="mt-4 text-left">
                 <summary className="text-sm text-gray-500 dark:text-gray-400 cursor-pointer">
