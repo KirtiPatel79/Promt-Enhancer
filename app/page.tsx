@@ -102,6 +102,8 @@ export default function HomePage() {
   const [enhancedPrompt, setEnhancedPrompt] = useState('')
   const [stats, setStats] = useState<EnhancementStats | null>(null)
   const [showResults, setShowResults] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('') // Error message state
+  const [copied, setCopied] = useState(false) // Copied feedback state
   // const { toast } = useToast()
 
   const handleEnhance = async () => {
@@ -116,6 +118,7 @@ export default function HomePage() {
 
     setIsLoading(true)
     setShowResults(false)
+    setErrorMessage('')
 
     try {
       const response = await apiClient.enhancePrompt({
@@ -139,12 +142,14 @@ export default function HomePage() {
         enhancementRatio: (data.enhanced_tokens / data.original_tokens) * 100
       })
       setShowResults(true)
-
+      setErrorMessage('')
       // toast({
       //   title: "Success!",
       //   description: "Your prompt has been enhanced successfully.",
       // })
     } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to enhance prompt. Please try again.')
+      setShowResults(false)
       // toast({
       //   title: "Error",
       //   description: "Failed to enhance prompt. Please try again.",
@@ -155,12 +160,18 @@ export default function HomePage() {
     }
   }
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
-    // toast({
-    //   title: "Copied!",
-    //   description: "Enhanced prompt copied to clipboard.",
-    // })
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+      // toast({
+      //   title: "Copied!",
+      //   description: "Enhanced prompt copied to clipboard.",
+      // })
+    } catch (err) {
+      setErrorMessage('Failed to copy to clipboard. Try HTTPS or localhost.')
+    }
   }
 
   const downloadAsFile = (content: string, filename: string) => {
@@ -203,6 +214,12 @@ export default function HomePage() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        {/* Error Message Display */}
+        {errorMessage && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded">
+            {errorMessage}
+          </div>
+        )}
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Section */}
           <div className="space-y-6">
@@ -329,6 +346,9 @@ export default function HomePage() {
                           onClick={() => copyToClipboard(enhancedPrompt)}
                         >
                           <Copy className="h-4 w-4" />
+                          {copied && (
+                            <span className="ml-2 text-green-600 text-xs animate-fade-in">Copied!</span>
+                          )}
                         </Button>
                         <Button
                           variant="outline"
@@ -418,7 +438,7 @@ export default function HomePage() {
             {!showResults && (
               <Card className="glass">
                 <CardContent className="p-12 text-center">
-                  <div className={`animate-pulse-slow mb-4 ${isLoading ? 'animate-spin' : ''}`}>
+                  <div className={`mb-4 ${isLoading ? 'animate-spin' : 'animate-pulse-slow'}`}>
                     <Sparkles className="h-16 w-16 text-orange-500 mx-auto" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Ready to Enhance</h3>
