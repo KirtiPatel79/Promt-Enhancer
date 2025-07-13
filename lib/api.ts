@@ -11,7 +11,7 @@ export class ApiClient {
 
   async enhancePrompt(request: PromptRequest): Promise<ApiResponse> {
     try {
-      const response = await fetch(`${this.baseURL}/enhance`, {
+      const response = await fetch(`${API_BASE_URL}/enhance`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
